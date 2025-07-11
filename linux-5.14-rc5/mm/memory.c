@@ -3629,8 +3629,7 @@ static inline vm_fault_t hermit_swapin_bypass_swapcache(struct page **pagep,
 	// [RMGrid] profiling
 	set_adc_pf_bits(adc_pf_bits, ADC_PF_MAJOR_BIT);
 	adc_profile_counter_inc(ADC_ONDEMAND_SWAPIN);
-	// count_memcg_event_mm(vma->vm_mm,
-	// 		     ONDEMAND_SWAPIN);
+	count_memcg_event_mm(vma->vm_mm, ONDEMAND_SWAPIN);
 
 	hermit_swap_ra_info(vmf, &pref_req.ra_info);
 	if (pref_req.ra_info.win > 1) {
@@ -3726,8 +3725,7 @@ vm_fault_t do_swap_page_profiling(struct vm_fault *vmf, int *adc_pf_bits,
 			// Hit on swap cache (only prefetched pages)
 			adc_profile_counter_inc(ADC_HIT_ON_PREFETCH);
 			if (vma->vm_mm)
-				count_memcg_event_mm(vma->vm_mm,
-						     HITON_SWAP_CACHE);
+				count_memcg_event_mm(vma->vm_mm, HITON_SWAP_CACHE);
 		}
 	}
 	if (!page) {

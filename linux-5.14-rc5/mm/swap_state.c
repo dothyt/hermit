@@ -477,6 +477,7 @@ __read_swap_cache_speculative(swp_entry_t entry, gfp_t gfp_mask,
 	// [RMGrid] profiling
 	set_adc_pf_bits(adc_pf_bits, ADC_PF_MAJOR_BIT);
 	adc_profile_counter_inc(ADC_ONDEMAND_SWAPIN);
+	count_memcg_event_mm(vma->vm_mm, ONDEMAND_SWAPIN);
 
 	for (;;) {
 		int err;
@@ -1070,7 +1071,7 @@ hermit_swap_vma_readahead(swp_entry_t fentry, gfp_t gfp_mask,
 		// [RMGrid] profiling
 		set_adc_pf_bits(adc_pf_bits, ADC_PF_MAJOR_BIT);
 		adc_profile_counter_inc(ADC_ONDEMAND_SWAPIN);
-		// count_memcg_event_mm(vma->vm_mm, ONDEMAND_SWAPIN);
+		count_memcg_event_mm(vma->vm_mm, ONDEMAND_SWAPIN);
 	}
 
 	if (pref_req.ra_info.win > 1) {
@@ -1166,9 +1167,11 @@ int hermit_vma_prefetch(struct pref_request *pref_req, int cpu,
 			swap_readpage_async(page);
 			SetPageReadahead(page);
 			count_vm_event(SWAP_RA);
+			count_memcg_event_mm(vma->vm_mm, SWAP_RA);
 			set_page_prefetch(page);
 			// [RMGrid] profiling
 			adc_profile_counter_inc(ADC_PREFETCH_SWAPIN);
+			count_memcg_event_mm(vma->vm_mm, PREFETCH_SWAPIN);
 			nr_prefed++;
 		}
 		put_page(page);

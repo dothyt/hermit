@@ -9,20 +9,14 @@ else
 	rswap-client-y += rswap_rdma.o
 endif
 
-OFA_DIR ?= /usr/src/ofa_kernel/default
-OFA_INCLUDE := $(OFA_DIR)/include
-OFA_SYMVERS := $(OFA_DIR)/Module.symvers
-
 RSWAP_ROOT_PATH := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 ifneq ($(LINUXINCLUDE),)
 
 LINUXINCLUDE :=                 \
-	-I$(OFA_INCLUDE)        \
 	-I$(RSWAP_ROOT_PATH)/.. \
 	$(LINUXINCLUDE)
 else
 
-export KBUILD_EXTRA_SYMBOLS=$(OFA_SYMVERS)
 KDIR ?= /lib/modules/`uname -r`/build
 
 default:

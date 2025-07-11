@@ -1495,6 +1495,17 @@ static char *memory_stat_format(struct mem_cgroup *memcg)
 		       memcg_events(memcg, THP_COLLAPSE_ALLOC));
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
+#ifdef CONFIG_SWAP
+	seq_buf_printf(&s, "%s %lu\n", vm_event_name(SWAP_RA),
+		       memcg_events(memcg, SWAP_RA));
+	seq_buf_printf(&s, "%s %lu\n", vm_event_name(SWAP_RA_HIT),
+		       memcg_events(memcg, SWAP_RA_HIT));
+	seq_buf_printf(&s, "%s %lu\n", vm_event_name(PREFETCH_SWAPIN),
+		       memcg_events(memcg, PREFETCH_SWAPIN));
+	seq_buf_printf(&s, "%s %lu\n", vm_event_name(HITON_SWAP_CACHE),
+		       memcg_events(memcg, HITON_SWAP_CACHE));
+#endif /* CONFIG_SWAP */
+
 	/* The above should easily fit into one page */
 	WARN_ON_ONCE(seq_buf_has_overflowed(&s));
 
@@ -4153,7 +4164,16 @@ static int memcg_stat_show(struct seq_file *m, void *v)
 		seq_printf(m, "file_cost %lu\n", file_cost);
 	}
 #endif
-
+#ifdef CONFIG_SWAP
+	seq_printf(m, "%s %lu\n", vm_event_name(SWAP_RA),
+			   memcg_events(memcg, SWAP_RA));
+	seq_printf(m, "%s %lu\n", vm_event_name(SWAP_RA_HIT),
+			   memcg_events(memcg, SWAP_RA_HIT));
+	seq_printf(m, "%s %lu\n", vm_event_name(PREFETCH_SWAPIN),
+			   memcg_events(memcg, PREFETCH_SWAPIN));
+	seq_printf(m, "%s %lu\n", vm_event_name(HITON_SWAP_CACHE),
+			   memcg_events(memcg, PREFETCH_SWAPIN));
+#endif
 	return 0;
 }
 
