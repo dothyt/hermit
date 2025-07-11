@@ -3,11 +3,11 @@
 
 ### Parameters
 
-version="5.14.0"
+version="5.14.0-rc5"
 
 # Append a suffix
 #LocalVersion="Semeru"
-LocalVersion=""
+LocalVersion="-hermit"
 
 num_cores=`nproc --all`
 
@@ -47,9 +47,9 @@ delete_old_kernel_contents () {
 		sudo rm /boot/initramfs-${version}${LocalVersion}.img   /boot/System.map-${version}${LocalVersion}  /boot/vmlinuz-${version}${LocalVersion}
 	elif [ $OS_DISTRO == "Ubuntu" ]
 	then
-		echo "sudo rm /boot/initrd.img-${version}*   /boot/System.map-${version}*  /boot/vmlinuz-${version}* "
+		echo "sudo rm /boot/initrd.img-${version}${LocalVersion} /boot/System.map-${version}${LocalVersion} /boot/vmlinuz-${version}${LocalVersion} /boot/config-${version}${LocalVersion}"
 		sleep 1
-		sudo rm /boot/initrd.img-${version}*   /boot/System.map-${version}*  /boot/vmlinuz-${version}*
+		sudo rm /boot/initrd.img-${version}${LocalVersion} /boot/System.map-${version}${LocalVersion} /boot/vmlinuz-${version}${LocalVersion} /boot/config-${version}${LocalVersion}
 	fi
 }
 

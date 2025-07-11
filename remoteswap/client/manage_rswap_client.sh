@@ -2,8 +2,8 @@
 
 
 ### Macros ###
-mem_server_ip="10.0.0.2"
-mem_server_port="9400"
+mem_server_ip="192.168.233.23"
+mem_server_port="50000"
 
 if [ -z "${HOME}" ]; then
 	echo "set home_dir first."
@@ -14,7 +14,7 @@ fi
 
 swap_file="${home_dir}/swapfile"
 # The swap file/partition size should be equal to the whole size of remote memory
-SWAP_PARTITION_SIZE_GB="48"
+SWAP_PARTITION_SIZE_GB="16"
 
 echo " !! Warning, check the parameters below : "
 echo " Assigned memory server IP ${mem_server_ip} Port ${mem_server_port}"
@@ -91,6 +91,8 @@ if [[ "${action}" = "install" ]]; then
 
 	create_swap_file
 
+	modprobe ib_core
+	modprobe rdma_cm
 	echo "insmod ./rswap-client.ko sip=${mem_server_ip} sport=${mem_server_port} rmsize=${SWAP_PARTITION_SIZE_GB}"
 	sudo insmod ./rswap-client.ko sip=${mem_server_ip} sport=${mem_server_port} rmsize=${SWAP_PARTITION_SIZE_GB}
 

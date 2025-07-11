@@ -4153,7 +4153,12 @@ static int memcg_stat_show(struct seq_file *m, void *v)
 		seq_printf(m, "file_cost %lu\n", file_cost);
 	}
 #endif
-
+#ifdef CONFIG_SWAP
+	seq_printf(m, "%s %lu\n", vm_event_name(SWAP_RA),
+		       memcg_events(memcg, SWAP_RA));
+	seq_printf(m, "%s %lu\n", vm_event_name(SWAP_RA_HIT),
+		       memcg_events(memcg, SWAP_RA_HIT));
+#endif
 	return 0;
 }
 
